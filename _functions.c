@@ -1,109 +1,98 @@
 #include "all.h"
 
 /**
- * print_char - Print a character.
- *
- * This function prints a single character.
- *
+ * print_char - Print a character to the standard output.
  * @c: The character to be printed.
- * Return: The length.
+ *
+ * Return: Number of characters printed.
  */
 int print_char(char c)
 {
-return (write(2, &c, 1));
+	return (write(2, &c, 1));
 }
 
 /**
- * print_number - Print a number.
- *
- * This function prints an integer number.
- *
- * @n: The number to be printed.
+ * print_number - Print an integer to the standard output.
+ * @n: The integer to be printed.
  */
 void print_number(int n)
 {
-unsigned int n1;
+	unsigned int n1;
 
-if (n < 0)
-{
-n1 = -n;
-print_char('-');
-}
-else
-n1 = n;
+	if (n < 0)
+	{
+		n1 = -n;
+		print_char('-');
+	}
+	else
+		n1 = n;
 
-if (n1 / 10)
-print_number(n1 / 10);
+	if (n1 / 10)
+		print_number(n1 / 10);
 
-print_char((n1 % 10) + '0');
+	print_char((n1 % 10) + '0');
 }
 
 /**
- * print_string - Print a string.
- *
- * This function prints a string.
- *
+ * print_string - Print a string to the standard output.
  * @s: The string to be printed.
- * Return: The length.
+ *
+ * Return: Number of characters printed.
  */
 int print_string(char *s)
 {
-return (write(2, s, _strlen(s)));
+	return (write(2, s, _strlen(s)));
 }
 
 /**
- * num_len - Calculate the length of a number.
+ * num_len - Calculate the number of digits in an integer.
+ * @n: The integer to be measured.
  *
- * This function returns the length of an integer number.
- *
- * @n: The number.
- * Return: The length.
+ * Return: Number of digits.
  */
 int num_len(int n)
 {
-int len = 1;
+	int len = 1;
 
-print_number(n);
+	print_number(n);
 
-if (n < 0)
-len++;
+	if (n < 0)
+		len++;
 
-while (n /= 10)
-len++;
+	while (n /= 10)
+		len++;
 
-return (len);
+	return (len);
 }
 
 /**
- * specifier - Handle and print arguments based on the specifier.
- *
- * This function handles and prints arguments based on the given specifier.
- *
+ * specifier - Print a formatted string based on the specifier character.
  * @c: The specifier character.
- * @args: The variable arguments list.
- * return: The length.
+ * @args: Variable argument list.
+ *
+ * Return: Number of characters printed.
  */
 int specifier(char c, va_list args)
 {
-int len = 0;
-char *str;
+	int len = 0;
+	char *str;
 
-if (c == 'c')
-len += print_char(va_arg(args, int));
-else if (c == 's')
-{
-str = va_arg(args, char *);
-len += print_string(str);
-}
-else if (c == 'i' || c == 'd')
-len += num_len(va_arg(args, int));
-else if (c == '%')
-len += print_char('%');
-else
-{
-len += print_char('%');
-len += print_char(c);
-}
+	if (c == 'c')
+		len += print_char(va_arg(args, int));
+	else if (c == 's')
+	{
+		str = va_arg(args, char *);
+		len += print_string(str);
+	}
+	else if (c == 'i' || c == 'd')
+		len += num_len(va_arg(args, int));
+	else if (c == '%')
+		len += print_char('%');
+	else
+	{
+		len += print_char('%');
+		len += print_char(c);
+	}
 
-return (len);
+	return (len);
 }

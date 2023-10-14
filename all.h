@@ -10,41 +10,27 @@
 #include <signal.h>
 #include <fcntl.h>
 
+/* Define a macro for string (if str is NULL, use "(null)") */
 #define STRING ((str) ? str : "(null)")
 
-/**
- * @struct para
- * @brief Structure containing relevant data for the shell.
- * @param envp Array of environmental variables.
- * @param pwd Working directory.
- * @param line Input.
- * @param shell_name Name of the shell.
- * @param path The path.
- * @param old_pwd Old working directory.
- * @param n_token Number of tokens.
- * @param n_path Number of tokens in the path.
- * @param status Status of the last command.
- * @param file Type of stream.
- * @param count Count of operations.
- * @param pid Shell ID.
- */
+/* Define a structure to hold various parameters */
 typedef struct para
 {
-    char **envp;
-    char **pwd;
-    char *line;
-    char *shell_name;
-    char *path;
-    char *old_pwd;
-    int n_token;
-    int n_path;
-    int status;
-    int count;
-    int pid;
-    int file;
+	char **envp;
+	char **pwd;
+	char *line;
+	char *shell_name;
+	char *path;
+	char *old_pwd;
+	int n_token;
+	int n_path;
+	int status;
+	int count;
+	int pid;
+	int file;
 } para;
 
-/* Function declarations */
+/* declaration of Functions */
 void handle_dots(char **line, para *args);
 void print_number(int n);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
