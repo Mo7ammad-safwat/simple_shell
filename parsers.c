@@ -7,7 +7,7 @@
  *
  * Return: return 1
  */
-int is_cmd(info_t *info, char *path)
+int is_cmd(inf_t *inf, char *path)
 {
 	struct stat st;
 
@@ -50,7 +50,7 @@ char *dup_chars(char *pathstr, int start, int stop)
  *
  * Return: the path
  */
-char *find_path(info_t *info, char *pathstr, char *cmd)
+char *find_path(info_t *inf, char *pathstr, char *cmd)
 {
 	int i = 0, curr_pos = 0;
 	char *path;

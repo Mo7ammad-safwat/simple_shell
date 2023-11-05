@@ -6,9 +6,9 @@
  *
  *  Return: Always 0
  */
-int _myhistory(info_t *info)
+int myHistory(inf_t *inf)
 {
-	print_list(info->history);
+	print_list(inf->history);
 	return (0);
 }
 
@@ -19,20 +19,20 @@ int _myhistory(info_t *info)
  *
  * Return: return 0
  */
-int unset_alias(info_t *info, char *str)
+int unsetAlias(inf_t *inf, char *str)
 {
 	char *p, c;
-	int ret;
+	int result;
 
 	p = _strchr(str, '=');
 	if (!p)
 		return (1);
 	c = *p;
 	*p = 0;
-	ret = delete_node_at_index(&(info->alias),
-		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+	result = delete_node_at_index(&(inf->alias),
+		get_node_index(inf->alias, node_starts_with(inf->alias, str, -1)));
 	*p = c;
-	return (ret);
+	return (result);
 }
 
 /**
@@ -42,7 +42,7 @@ int unset_alias(info_t *info, char *str)
  *
  * Return: return 0
  */
-int set_alias(info_t *info, char *str)
+int setAlias(inf_t *inf, char *str)
 {
 	char *p;
 
@@ -50,10 +50,10 @@ int set_alias(info_t *info, char *str)
 	if (!p)
 		return (1);
 	if (!*++p)
-		return (unset_alias(info, str));
+		return (unsetAlias(inf, str));
 
-	unset_alias(info, str);
-	return (add_node_end(&(info->alias), str, 0) == NULL);
+	unsetAlias(inf, str);
+	return (add_node_end(&(inf->alias), str, 0) == NULL);
 }
 
 /**
@@ -62,7 +62,7 @@ int set_alias(info_t *info, char *str)
  *
  * Return: return 0
  */
-int print_alias(list_t *node)
+int printAlias(list_t *node)
 {
 	char *p = NULL, *a = NULL;
 
@@ -85,29 +85,29 @@ int print_alias(list_t *node)
  *
  *  Return: Always 0
  */
-int _myalias(info_t *info)
+int myAlias(inf_t *inf)
 {
 	int i = 0;
 	char *p = NULL;
 	list_t *node = NULL;
 
-	if (info->argc == 1)
+	if (inf->argc == 1)
 	{
-		node = info->alias;
+		node = inf->alias;
 		while (node)
 		{
-			print_alias(node);
+			printAlias(node);
 			node = node->next;
 		}
 		return (0);
 	}
-	for (i = 1; info->argv[i]; i++)
+	for (i = 1; inf->argv[i]; i++)
 	{
-		p = _strchr(info->argv[i], '=');
+		p = _strchr(inf->argv[i], '=');
 		if (p)
-			set_alias(info, info->argv[i]);
+			setAlias(inf, inf->argv[i]);
 		else
-			print_alias(node_starts_with(info->alias, info->argv[i], '='));
+			printAlias(node_starts_with(inf->alias, inf->argv[i], '='));
 	}
 
 	return (0);

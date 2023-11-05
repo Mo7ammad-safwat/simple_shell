@@ -4,23 +4,23 @@
  * interactive - returns true
  * @info: struct addr
  *
- * Return: 1 .
+ * return: 1 .
  */
-int interactive(info_t *info)
+int isInteractive(inf_t *inf)
 {
-	return (isatty(STDIN_FILENO) && info->readfd <= 2);
+	return (isatty(STDIN_FILENO) && inf->readfd <= 2);
 }
 
 /**
  * is_delim - checks  delimeter
  * @c: the character
  * @delim: the string
- * Return: 1 for true 0 for false
+ * return: 1 for true 0 for false
  */
-int is_delim(char c, char *delim)
+int isDelimiter(char c, char *delimiter)
 {
-	while (*delim)
-		if (*delim++ == c)
+	while (*delimiter)
+		if (*delimiter++ == c)
 			return (1);
 	return (0);
 }
@@ -31,7 +31,7 @@ int is_delim(char c, char *delim)
  *Return: 0 if not char
  */
 
-int _isalpha(int c)
+int isAlpha(int c)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 		return (1);
@@ -45,7 +45,7 @@ int _isalpha(int c)
  *Return: 0 if no numbers in string
  */
 
-int _atoi(char *s)
+int stringToInteger(char *s)
 {
 	int i, sign = 1, flag = 0, output;
 	unsigned int result = 0;

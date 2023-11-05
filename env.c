@@ -6,22 +6,22 @@
  *
  * Return: Always 0
  */
-int _myenv(info_t *info)
+int myenv(info *inf)
 {
-	print_list_str(info->env);
+	print_list_str(inf->env);
 	return (0);
 }
 
 /**
- * _getenv - gets the value of variable
+ * getenv - gets the value of variable
  * @info: Structure containing arguments
  * @name: env name
  *
  * Return: return 1
  */
-char *_getenv(info_t *info, const char *name)
+char *getenv(inf_t *inf, const char *name)
 {
-	list_t *node = info->env;
+	lis_t *node = inf->env;
 	char *p;
 
 	while (node)
@@ -35,40 +35,40 @@ char *_getenv(info_t *info, const char *name)
 }
 
 /**
- * _mysetenv - Initialize a new variable
+ * mysetenv - Initialize a new variable
  * @info: Structure containing arguments
  *
  *  Return: Always 0
  */
-int _mysetenv(info_t *info)
+int mysetenv(inf_t *inf)
 {
-	if (info->argc != 3)
+	if (inf->argc != 3)
 	{
-		_eputs("Incorrect number of arguements\n");
+		e_puts("Incorrect number of arguements\n");
 		return (1);
 	}
-	if (_setenv(info, info->argv[1], info->argv[2]))
+	if (setenv(inf, inf->argv[1], inf->argv[2]))
 		return (0);
 	return (1);
 }
 
 /**
- * _myunsetenv - Remove variable
+ * myunsetenv - Remove variable
  * @info: Structure containing arguments
  *
  *  Return: Always 0
  */
-int _myunsetenv(info_t *info)
+int myunsetenv(inf_t *inf)
 {
 	int i;
 
-	if (info->argc == 1)
+	if (inf->argc == 1)
 	{
-		_eputs("Too few arguements.\n");
+		e_puts("Too few arguements.\n");
 		return (1);
 	}
-	for (i = 1; i <= info->argc; i++)
-		_unsetenv(info, info->argv[i]);
+	for (i = 1; i <= inf->argc; i++)
+		unsetenv(inf, inf->argv[i]);
 
 	return (0);
 }
@@ -79,13 +79,13 @@ int _myunsetenv(info_t *info)
  *
  * Return: Always 0
  */
-int populate_env_list(info_t *info)
+int populateenv_list(inf_t *inf)
 {
-	list_t *node = NULL;
+	lis_t *node = NULL;
 	size_t i;
 
 	for (i = 0; environ[i]; i++)
 		add_node_end(&node, environ[i], 0);
-	info->env = node;
+	inf->env = node;
 	return (0);
 }

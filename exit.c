@@ -1,21 +1,21 @@
 #include "shell.h"
 
 /**
- **_strncpy - copy a string
+ **strncpy - copy a string
  *@dest: the destination for string
  *@src: src string
  *@n: the amount of chars
  *Return: the string
  */
-char *_strncpy(char *dest, char *src, int n)
+char *strncpy(char *destination, char *source, int n)
 {
 	int i, j;
-	char *s = dest;
+	char *s = destination;
 
 	i = 0;
-	while (src[i] != '\0' && i < n - 1)
+	while (source[i] != '\0' && i < n - 1)
 	{
-		dest[i] = src[i];
+		destination[i] = source[i];
 		i++;
 	}
 	if (i < n)
@@ -23,7 +23,7 @@ char *_strncpy(char *dest, char *src, int n)
 		j = i;
 		while (j < n)
 		{
-			dest[j] = '\0';
+			destination[j] = '\0';
 			j++;
 		}
 	}
@@ -31,39 +31,39 @@ char *_strncpy(char *dest, char *src, int n)
 }
 
 /**
- **_strncat - concatenates strings
+ **strncat - concatenates strings
  *@dest: 1st string
  *@src: 2nd string
  *@n: the amount of bytes
  *Return: string
  */
-char *_strncat(char *dest, char *src, int n)
+char *strncat(char *destination, char *source, int n)
 {
 	int i, j;
-	char *s = dest;
+	char *s = destination;
 
 	i = 0;
 	j = 0;
-	while (dest[i] != '\0')
+	while (destination[i] != '\0')
 		i++;
-	while (src[j] != '\0' && j < n)
+	while (source[j] != '\0' && j < n)
 	{
-		dest[i] = src[j];
+		destination[i] = source[j];
 		i++;
 		j++;
 	}
 	if (j < n)
-		dest[i] = '\0';
+		destination[i] = '\0';
 	return (s);
 }
 
 /**
- **_strchr - character in a string
+ **strchr - character in a string
  *@s: string
  *@c: character to look for
  *Return: a pointer
  */
-char *_strchr(char *s, char c)
+char *strchr(char *s, char c)
 {
 	do {
 		if (*s == c)

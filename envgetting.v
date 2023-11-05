@@ -2,18 +2,18 @@
 
 /**
  * get_environ - returns the string array
- * @info: Structure containing args
+ * @inf: Structure containing args
  * Return: return 0
  */
-char **get_environ(info_t *info)
+char **get_environ(inf_t *inf)
 {
-	if (!info->environ || info->env_changed)
+	if (!inf->environ || inf->env_changed)
 	{
-		info->environ = list_to_strings(info->env);
-		info->env_changed = 0;
+		inf->environ = list_to_strings(inf->env);
+		inf->env_changed = 0;
 	}
 
-	return (info->environ);
+	return (inf->environ);
 }
 
 /**
@@ -22,9 +22,9 @@ char **get_environ(info_t *info)
  *  Return: 1 on remove
  * @var: the string env var
  */
-int _unsetenv(info_t *info, char *var)
+int unsetenv(inf_t *inf, char *var)
 {
-	list_t *node = info->env;
+	lis_t *node = inf->env;
 	size_t i = 0;
 	char *p;
 
@@ -36,15 +36,15 @@ int _unsetenv(info_t *info, char *var)
 		p = starts_with(node->str, var);
 		if (p && *p == '=')
 		{
-			info->env_changed = delete_node_at_index(&(info->env), i);
+			inf->env_changed = delete_node_at_index(&(inf->env), i);
 			i = 0;
-			node = info->env;
+			node = inf->env;
 			continue;
 		}
 		node = node->next;
 		i++;
 	}
-	return (info->env_changed);
+	return (inf->env_changed);
 }
 
 /**
@@ -54,10 +54,10 @@ int _unsetenv(info_t *info, char *var)
  * @value: the string env var value
  *  Return: return 0
  */
-int _setenv(info_t *info, char *var, char *value)
+int setenv(inf_t *inf, char *var, char *value)
 {
 	char *buf = NULL;
-	list_t *node;
+	lis_t *node;
 	char *p;
 
 	if (!var || !value)
@@ -67,9 +67,9 @@ int _setenv(info_t *info, char *var, char *value)
 	if (!buf)
 		return (1);
 	_strcpy(buf, var);
-	_strcat(buf, "=");
+	strcat(buf, "=");
 	_strcat(buf, value);
-	node = info->env;
+	node = inf->env;
 	while (node)
 	{
 		p = starts_with(node->str, var);
@@ -77,13 +77,13 @@ int _setenv(info_t *info, char *var, char *value)
 		{
 			free(node->str);
 			node->str = buf;
-			info->env_changed = 1;
+			inf->env_changed = 1;
 			return (0);
 		}
 		node = node->next;
 	}
-	add_node_end(&(info->env), buf, 0);
+	add_node_end(&(inf->env), buf, 0);
 	free(buf);
-	info->env_changed = 1;
+	inf->env_changed = 1;
 	return (0);
 }

@@ -6,9 +6,9 @@
  *
  * Return: list size
  */
-size_t list_len(const list_t *h)
+size_s list_len(const lis_t *h)
 {
-	size_t i = 0;
+	size_s i = 0;
 
 	while (h)
 	{
@@ -26,7 +26,7 @@ size_t list_len(const list_t *h)
  */
 char **list_to_strings(list_t *head)
 {
-	list_t *node = head;
+	lis_t *node = head;
 	size_t i = list_len(head), j;
 	char **strs;
 	char *str;
@@ -61,9 +61,9 @@ char **list_to_strings(list_t *head)
  *
  * Return: list size
  */
-size_t print_list(const list_t *h)
+size_s print_list(const lis_t *h)
 {
-	size_t i = 0;
+	size_s i = 0;
 
 	while (h)
 	{
@@ -86,7 +86,7 @@ size_t print_list(const list_t *h)
  *
  * Return: node
  */
-list_t *node_starts_with(list_t *node, char *prefix, char c)
+lis_t *node_starts_with(lis_t *node, char *prefix, char c)
 {
 	char *p = NULL;
 
@@ -107,9 +107,9 @@ list_t *node_starts_with(list_t *node, char *prefix, char c)
  *
  * Return: index of node
  */
-ssize_t get_node_index(list_t *head, list_t *node)
+ssize_s get_node_index(lis_t *head, lis_t *node)
 {
-	size_t i = 0;
+	size_s i = 0;
 
 	while (head)
 	{
