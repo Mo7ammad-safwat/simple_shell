@@ -81,6 +81,7 @@ void find_cmd(inf_t *);
 void fork_cmd(inf_t *);
 
 int is_cmd(inf_t *, char *);
+
 char *dup_chars(char *, int, int);
 char *find_path(inf_t *, char *, char *);
 
