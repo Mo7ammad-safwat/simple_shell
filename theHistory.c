@@ -6,7 +6,6 @@
  *
  * Return: allocated string containg history file
  */
-
 char *get_history_file(inf_t *inf)
 {
 	char *buf, *dir;
