@@ -8,6 +8,7 @@
  *
  * Return: bytes
  */
+
 ssize_s input_buf(inf_t *inf, char **buf, size_s *len)
 {
 	ssize_s r = 0;
