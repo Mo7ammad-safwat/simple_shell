@@ -6,6 +6,7 @@
  *
  * Return: return 1
  */
+
 int bfree(void **ptr)
 {
 	if (ptr && *ptr)
