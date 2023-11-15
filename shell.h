@@ -1,76 +1,112 @@
-#ifndef SHELL_H
-#define SHELL_H
+#ifndef _SHELL_H_
+#define _SHELL_H_
 
-#define BUFFERSIZE 1024
-#define DELIMINATOR "\n\r\t\a "
+/**###### environ var ######*/
 
 extern char **environ;
 
-#include <errno.h>
-#include <fcntl.h>
-#include <limits.h>
-#include <signal.h>
+/**##### MACROS ######*/
+
+#define BUFSIZE 1024
+#define DELIM " \t\r\n\a"
+#define PRINTER(c) (write(STDOUT_FILENO, c, _strlen(c)))
+
+/**###### LIBS USED ######*/
+
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <linux/limits.h>
+
+
+
+
+
+/**###### STRING FUNCTION ######*/
+
+char *_strtok(char *str, const char *tok);
+unsigned int check_delim(char c, const char *str);
+char *_strncpy(char *dest, char *src, int n);
+int _strlen(char *s);
+int _putchar(char c);
+int _atoi(char *s);
+void _puts(char *str);
+int _strcmp(char *s1, char *s2);
+int _isalpha(int c);
+void array_rev(char *arr, int len);
+int intlen(int num);
+char *_itoa(unsigned int n);
+char *_strcat(char *dest, char *src);
+char *_strcpy(char *dest, char *src);
+char *_strchr(char *s, char c);
+int _strncmp(const char *s1, const char *s2, size_t n);
+char *_strdup(char *str);
+
+/**###### MEMORIE  MANGMENT ####*/
+
+void free_env(char **env);
+void *fill_an_array(void *a, int el, unsigned int len);
+char *_memcpy(char *dest, char *src, unsigned int n);
+void *_calloc(unsigned int size);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+void free_all(char **input, char *line);
+
+/**###### INPUT Function ######*/
+
+void prompt(void);
+void signal_to_handel(int sig);
+char *_getline(void);
+
+/** ###### Command parser and extractor ###*/
+
+int path_cmd(char **line);
+char *_getenv(char *name);
+char **parse_cmd(char *cmd);
+int handle_builtin(char **cmd, int er);
+void read_file(char *filename, char **argv);
+char *build(char *token, char *value);
+int check_builtin(char **cmd);
+void creat_envi(char **envi);
+int check_cmd(char **tokens, char *line, int count, char **argv);
+void treat_file(char *line, int counter, FILE *fd, char **argv);
+void exit_bul_for_file(char **cmd, char *line, FILE *fd);
+
+/** ####BUL FUNC #####*/
+
+void hashtag_handle(char *buff);
+int history(char *input);
+int history_dis(char **cmd, int er);
+int dis_env(char **cmd, int er);
+int change_dir(char **cmd, int er);
+int display_help(char **cmd, int er);
+int echo_bul(char **cmd, int er);
+void  exit_bul(char **cmd, char *input, char **argv, int c);
+int print_echo(char **cmd);
+
+/** ####error handle and Printer ####*/
+void print_number(unsigned int n);
+void print_number_in(int n);
+void print_error(char *line, int c, char **argv);
+void _prerror(char **argv, int c, char **cmd);
+
 
 /**
- * struct list_s - singly linked list
- * @str: string - (malloc'ed string)
- * @len: length of the string
- * @next: points to the next node
- *
- * Description: singly linked list node structure
- * for Holberton project
+ * struct bulltin - contain bultin to handle and function to excute
+ * @command:pointer to char
+ * @fun:fun to excute when bultin true
  */
 
-typedef struct list_s
+typedef struct  bulltin
 {
-	char *str;
-	unsigned int len;
-	struct list_s *next;
-} list_t;
-
-extern char *head;
-
-
-int call_cd(char **args);
-void call_exit(char **args);
-int call_exit_status(char **args);
-int call_env(char **args);
-int call_help(char *args);
-int call_unsetenv(char **env, char **str);
-int call_setenv(char **env, char **str);
-int WhoAmI(void);
-
-int find_env_var(char **enviorment, char *str);
-int check_input(char **str, char **env);
-char *_getenv(char **env, char *str);
-int input_check(char **str, char **env, char *newstr, char *path, char *new2);
-
-int _isdigit(char str);
-int _exit_atoi(char *str);
-
-char **parse_line(char *line);
-
-int function_filter(char **commands, char **env);
-
-int exec_cmd(char **str, char **env);
-char *read_line(void);
-char *_strcat(char *s1, char *s2);
-void ctrl_c_handler(int sig_num);
-
-int _atoi(char *str);
-char *_strdup(const char *str);
-int _strcmp(char *str1, char *str2);
-int _strlen(char *str);
-char *_strcpy(char *dest, char *src);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-
-list_t *add_node(list_t **head, const char *str);
-void free_list(list_t *head);
+	char *command;
+	int (*fun)(char **line, int er);
+} bul_t;
 
 #endif
