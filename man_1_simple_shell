@@ -1,103 +1,78 @@
-.TH man 1 "20 November 2020" "0.20" "HSH man page"
+.TH SHELL 1 "27 November 2019" GNU "Shell man page"
 .SH NAME
-.B hsh 
-- Simple Shell Studying purpose Holberton School
+.B hsh
+- Command line interpreter (shell)
 .SH SYNOPSIS
-.B ./hsh 
-[command] [options] [FILE]
-.SH COPYRIGHT
-.B hsh 
-is Copyright (C) Ahmed Belhaj  and licensed under the MIT license.
+The shell is executed by typing ./hsh
+.br
+Then, it will wait for an input such as : command [arguments] [other]
 .SH DESCRIPTION
-.B hsh 
-(Simple Shell) is an end of semester project for students at Holberton School where we expore, 
-understand and build a working functional simple shell program.
-.B Overview
-
-The simple shell is a simplified iteration of a command line interpreter, similar to 
-.B bash or 
-.B dash. 
-.I FORMAT [ARGUMENT]...
+This shell is a project dedicated to our studies. My partner and I, have tried to mimic the behavior of a real shell. In case you don't know what a shell is (I doubt that) here is a brief explanation. A shell is a command language interpreter that executes commands read from the standard input or from a file. Our shell does not support the arguments passed to it, yet. We are still working on it.
+.br
+.B What hsh can do :
+.br
+- Executes any command with its arguments
+.br
+- Executes built-in commands
+.br
+- Handle pipes
+.br
+- Handle the command seperator ;
+.br
+- Handle && and || logical operators
+.br
+- handle variable replacement
+.br
+- handle the $? variable
+.br
+- handle the $$ variable
+.SH BUILT-IN FUNCTIONS
+Those are the available built-in functions :
+.br
+ - exit : exit the shell
+.br
+ - cd : Change Directory
+.br
+ - help : Display the help page
+.br
+ - history : Display history of commands used
+.br
+ - alias : Put an alias for a command
+.br
+ - env : Display the environment variables
 .SH OPTIONS
-.B hsh
-operates in both 
-.I interactive 
-and 
-.I non-interactive
- mode. The user may initiate 
-.B simple shell
-and begin working or initate 
-.B simple shell
-using commands meant to be run by the program.
-.SH ARGUMENTS
-The first argument, argument 0 is understood to be the command to be run by 
-.B simple shell
-and arguments following as modifiers or options.
-.SH INVOCATION
-.B hsh
-may be invoked with the same functionality in 
-.I interactive 
-or 
-.I non-interactive 
-mode.  The user may quit the program by typing "exit", "Ctrl + D",  on the command line.
-When the program quits or a command has been executed, 
-.B simple shell 
-returns with a new prompt: "$ "
-
-.B Example
-.IP
-
-$./hsh
-
-$pwd
-
-Username@your-regular-prompt:~$
-
-$
-
-$/bin/pwd
-
-Username@your-regular-prompt:~$
-$
-
-.SH RESERVED WORDS
-.B exit: 
-quits the program, exits the shell.
-
-.B env: 
-prints the environment variables
-
-.SH HISTORY
-The 
-.B history 
-built-in displays the history list, one command per line, preceded with line numbers, starting with 0. On exit the entire history is written to a file named
-.I simple_shell_history
-in the 
-.I $HOME
-directory.
-.SH SHELL BUILTIN COMMANDS
-The commands 
-.B exit
-,
-.B env
-,
-.B help
-and
-.B echo
-are handled automatically by 
-.B hsh
-
-.SH SEE ALSO
-.I sh(1)
-,
-.I bash(1)
-,
-.I _printf(3)
-
+There are no options for the moment.
+.SH EXIT STATUS
+The exit value depends on how a function has terminated. Every error is identified by a certain value. On success it will always return 0.
+.SH RETURN VALUE
+Return 0 on success, otherwise it will return the exit value.
+.SH ENVIRONMENT
+- PATH
+.br
+- $?
+.br
+- $$
 .SH BUGS
-No Known bug , please 
-Report 
-.B hsh
-bugs to https://github.com/Theemiss/simple_shell/issues
-.SH AUTHOR
-Ahmed Belhaj
+There is no known bugs at the moment.
+.SH EXAMPLE
+.B Two ways to execute our shell :
+.br
+.B The intercative mode :
+.br
+ $ ./hsh
+.br
+ #cisfun$ /bin/ls
+.br
+ hsh main.c shell.c
+.br
+ #cisfun$ exit
+.br
+ $
+.br
+.B The non-interactive mode :
+.br
+ $ echo "/bin/ls" | ./hsh
+.br
+ hsh main.c shell.c
+.SH AUTHORS
+Mariem Matri, Inès Chokri
