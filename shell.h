@@ -1,177 +1,112 @@
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <limits.h>
-#include <fcntl.h>
-#include <errno.h>
-
-#define READ_BUF_SIZE 1024
-#define WRITE_BUF_SIZE 1024
-#define BUF_FLUSH -1
-
-#define CMD_NORM        0
-#define CMD_OR          1
-#define CMD_AND         2
-#define CMD_CHAIN       3
-
-#define CONVERT_LOWERCASE       1
-#define CONVERT_UNSIGNED        2
-
-#define USE_GETLINE 0
-#define USE_STRTOK 0
-
-#define HIST_FILE       ".simple_shell_history"
-#define HIST_MAX        4096
+/**###### environ var ######*/
 
 extern char **environ;
 
+/**##### MACROS ######*/
 
-typedef struct liststr
+#define BUFSIZE 1024
+#define DELIM " \t\r\n\a"
+#define PRINTER(c) (write(STDOUT_FILENO, c, _strlen(c)))
+
+/**###### LIBS USED ######*/
+
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <linux/limits.h>
+
+
+
+
+
+/**###### STRING FUNCTION ######*/
+
+char *_strtok(char *str, const char *tok);
+unsigned int check_delim(char c, const char *str);
+char *_strncpy(char *dest, char *src, int n);
+int _strlen(char *s);
+int _putchar(char c);
+int _atoi(char *s);
+void _puts(char *str);
+int _strcmp(char *s1, char *s2);
+int _isalpha(int c);
+void array_rev(char *arr, int len);
+int intlen(int num);
+char *_itoa(unsigned int n);
+char *_strcat(char *dest, char *src);
+char *_strcpy(char *dest, char *src);
+char *_strchr(char *s, char c);
+int _strncmp(const char *s1, const char *s2, size_t n);
+char *_strdup(char *str);
+
+/**###### MEMORIE  MANGMENT ####*/
+
+void free_env(char **env);
+void *fill_an_array(void *a, int el, unsigned int len);
+char *_memcpy(char *dest, char *src, unsigned int n);
+void *_calloc(unsigned int size);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+void free_all(char **input, char *line);
+
+/**###### INPUT Function ######*/
+
+void prompt(void);
+void signal_to_handel(int sig);
+char *_getline(void);
+
+/** ###### Command parser and extractor ###*/
+
+int path_cmd(char **line);
+char *_getenv(char *name);
+char **parse_cmd(char *cmd);
+int handle_builtin(char **cmd, int er);
+void read_file(char *filename, char **argv);
+char *build(char *token, char *value);
+int check_builtin(char **cmd);
+void creat_envi(char **envi);
+int check_cmd(char **tokens, char *line, int count, char **argv);
+void treat_file(char *line, int counter, FILE *fd, char **argv);
+void exit_bul_for_file(char **cmd, char *line, FILE *fd);
+
+/** ####BUL FUNC #####*/
+
+void hashtag_handle(char *buff);
+int history(char *input);
+int history_dis(char **cmd, int er);
+int dis_env(char **cmd, int er);
+int change_dir(char **cmd, int er);
+int display_help(char **cmd, int er);
+int echo_bul(char **cmd, int er);
+void  exit_bul(char **cmd, char *input, char **argv, int c);
+int print_echo(char **cmd);
+
+/** ####error handle and Printer ####*/
+void print_number(unsigned int n);
+void print_number_in(int n);
+void print_error(char *line, int c, char **argv);
+void _prerror(char **argv, int c, char **cmd);
+
+
+/**
+ * struct bulltin - contain bultin to handle and function to excute
+ * @command:pointer to char
+ * @fun:fun to excute when bultin true
+ */
+
+typedef struct  bulltin
 {
-        int num;
-        char *str;
-        struct liststr *next;
-} lis_t;
-
-typedef struct passinf
-{
-        char *arg;
-        char **argv;
-        char *path;
-        int argc;
-        unsigned int line_count;
-        int err_num;
-        int linecount_flag;
-        char *fname;
-        lis_t *env;
-        lis_t *history;
-        lis_t *alias;
-        char **environ;
-        int env_changed;
-        int status;
-
-        char **cmd_buf;
-        int cmd_buf_type;
-        int readfd;
-        int histcount;
-} inf_t;
-
-#define inf_INIT \
-{NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
-        0, 0, 0}
-
-typedef struct builtin
-{
-        char *type;
-        int (*func)(inf_t *);
-        int (*func)(inf_t *);
-} builtin_table;
-
-
-int hsh(inf_t *, char **);
-int find_builtin(inf_t *);
-void find_cmd(inf_t *);
-void fork_cmd(inf_t *);
-
-int is_cmd(inf_t *, char *);
-
-char *dup_chars(char *, int, int);
-char *find_path(inf_t *, char *, char *);
-
-int loophsh(char **);
-
-void e_puts(char *);
-int e_putchar(char);
-int e_putfd(char c, int fd);
-int e_putsfd(char *str, int fd);
-
-int _strlen(char *);
-int _strcmp(char *, char *);
-char *starts_with(const char *, const char *);
-char *_strcat(char *, char *);
-
-char *_strcpy(char *, char *);
-char *_strdup(const char *);
-void _puts(char *);
-int _putchar(char);
-
-char *strncpy(char *, char *, int);
-char *strncat(char *, char *, int);
-char *strchr(char *, char);
-
-char **strtow(char *, char *);
-char **strtow2(char *, char);
-
-char *_memset(char *, char, unsigned int);
-void ffree(char **);
-void *_realloc(void *, unsigned int, unsigned int);
-
-int bfree(void **);
-
-int isInteractive(inf_t *);
-int isDelimiteriter(char, char *);
-int isAlpha(int);
-int stringToInteger(char *);
-
-int _erratoi(char *);
-void print_error(inf_t *, char *);
-int print_d(int, int);
-char *convert_number(long int, int, int);
-void remove_comments(char *);
-int _myexit(inf_t *);
-int _mycd(inf_t *);
-int _myhelp(inf_t *);
-
-int _myhistory(inf_t *);
-int _myalias(inf_t *);
-
-ssize_s get_input(inf_t *);
-int _getline(inf_t *, char **, size_s *);
-void sigintHandler(int);
-
-void clear_inf(inf_t *);
-void set_inf(inf_t *, char **);
-void free_inf(inf_t *, int);
-
-char *_getenv(inf_t *, const char *);
-int _myenv(inf_t *);
-int mysetenv(inf_t *);
-int myunsetenv(inf_t *);
-int populate_env_list(inf_t *);
-
-char **get_environ(inf_t *);
-int _unsetenv(inf_t *, char *);
-int setenv(inf_t *, char *, char *);
-
-char *get_history_file(inf_t *inf);
-int write_history(inf_t *inf);
-int read_history(inf_t *inf);
-int build_history_list(inf_t *inf, char *buf, int linecount);
-int renumber_history(inf_t *inf);
-
-lis_t *add_node(lis_t **, const char *, int);
-lis_t *add_node_end(lis_t **, const char *, int);
-size_s print_list_str(const lis_t *);
-int delete_node_at_index(lis_t **, unsigned int);
-void free_list(lis_t **);
-
-size_s list_len(const lis_t *);
-char **lis_to_strings(lis_t *);
-size_s print_list(const lis_t *);
-lis_t *node_starts_with(lis_t *, char *, char);
-ssize_s get_node_index(lis_t *, lis_t *);
-
-int is_chain(inf_t *, char *, size_s *);
-void check_chain(inf_t *, char *, size_s *, size_s, size_s);
-int replace_alias(inf_t *);
-int replace_vars(inf_t *);
-int replace_string(char **, char *);
+	char *command;
+	int (*fun)(char **line, int er);
+} bul_t;
 
 #endif
