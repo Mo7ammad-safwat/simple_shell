@@ -1,67 +1,76 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <errno.h>
-#include <stddef.h>
-#include <sys/stat.h>
-#include <signal.h>
-
-int _putchar(char c);
-void _puts(char *str);
-int _strlen(char *s);
-char *_strdup(char *str);
-char *concat_all(char *name, char *sep, char *value);
-
-char **splitstring(char *str, const char *delim);
-void execute(char **argv);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-
+#define BUFFERSIZE 1024
+#define DELIMINATOR "\n\r\t\a "
 
 extern char **environ;
 
-/**
- * struct list_path - Linked list containing PATH directories
- * @dir: directory in path
- * @p: pointer to next node
- */
-typedef struct list_path
-{
-	char *dir;
-	struct list_path *p;
-} list_path;
-
-
-char *_getenv(const char *name);
-list_path *add_node_end(list_path **head, char *str);
-list_path *linkpath(char *path);
-char *_which(char *filename, list_path *head);
+#include <errno.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 /**
- * struct mybuild - pointer to function with corresponding buildin command
- * @name: buildin command
- * @func: execute the buildin command
+ * struct list_s - singly linked list
+ * @str: string - (malloc'ed string)
+ * @len: length of the string
+ * @next: points to the next node
+ *
+ * Description: singly linked list node structure
+ * for Holberton project
  */
-typedef struct mybuild
+
+typedef struct list_s
 {
-	char *name;
-	void (*func)(char **);
-} mybuild;
+	char *str;
+	unsigned int len;
+	struct list_s *next;
+} list_t;
 
-void(*checkbuild(char **arv))(char **arv);
-int _atoi(char *s);
-void exitt(char **arv);
-void env(char **arv);
-void _setenv(char **arv);
-void _unsetenv(char **arv);
+extern char *head;
 
-void freearv(char **arv);
-void free_list(list_path *head);
 
+int call_cd(char **args);
+void call_exit(char **args);
+int call_exit_status(char **args);
+int call_env(char **args);
+int call_help(char *args);
+int call_unsetenv(char **env, char **str);
+int call_setenv(char **env, char **str);
+int WhoAmI(void);
+
+int find_env_var(char **enviorment, char *str);
+int check_input(char **str, char **env);
+char *_getenv(char **env, char *str);
+int input_check(char **str, char **env, char *newstr, char *path, char *new2);
+
+int _isdigit(char str);
+int _exit_atoi(char *str);
+
+char **parse_line(char *line);
+
+int function_filter(char **commands, char **env);
+
+int exec_cmd(char **str, char **env);
+char *read_line(void);
+char *_strcat(char *s1, char *s2);
+void ctrl_c_handler(int sig_num);
+
+int _atoi(char *str);
+char *_strdup(const char *str);
+int _strcmp(char *str1, char *str2);
+int _strlen(char *str);
+char *_strcpy(char *dest, char *src);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+
+list_t *add_node(list_t **head, const char *str);
+void free_list(list_t *head);
 
 #endif
